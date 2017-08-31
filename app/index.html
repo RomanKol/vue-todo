@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>vue-todos</title>
+    <style>
+      * {
+          box-sizing: border-box;
+      }
+      
+      body {
+          margin: 0;
+          padding: 0;
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          background-color: #2e2d33;
+          font-family: 'Helvetica Neue', Arial, sans-serif;
+          font-size: 16px;
+          color: #fff;
+      }
+      
+      section {
+          width: 80%;
+          background-color: #403f4d;
+          padding: 4em 6em;
+      
+          box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      }
+      
+      button {
+          cursor: pointer;
+          background-color: transparent;
+          border: none;
+      }
+      
+      #date-header {
+          margin: 0 0 1em 0;
+          justify-content: flex-start;
+          line-height: 1;
+      }
+      
+      #date-header h1 {
+          font-size: 5em;
+          font-weight: bold;
+          margin: 0 1rem 0 0;
+      }
+      
+      #date-header div {
+          align-items: flex-start;
+      }
+      
+      #date-header h2 {
+          font-size: 2em;
+          margin: 0;
+      }
+      
+      #date-header h3{
+          font-size: 2em;
+          font-weight: normal;
+          margin: 0;
+      }
+      
+      #date-header > h3 {
+          margin-left: auto;
+          align-self: center;
+      }
+      
+      
+      .input-group {
+          display: flex;
+          background-color: #2e2d33;
+      }
+      
+      .input-group > input {
+          flex: 1 1 auto;
+          line-height: 1;
+          font-size: 1.2em;
+          color: #ddd;
+          padding: 0 1em;
+          border: none;
+          background-color: transparent;
+          outline-color: rgba(255, 71, 71, 0.75);
+      }
+      
+      .input-group > button {
+          display: flex;
+          flex: 0 0 4em;
+          height: 4em;
+          outline-color: rgba(255, 71, 71, 0.75);
+      }
+      
+      .input-group > button > img {
+          width: 100%;
+          height: auto;
+      }
+      
+      .todo-list {
+          margin: 2em 0;
+          padding: 0;
+          list-style: none;
+      }
+      
+      .todo-item {
+          background-color: rgba(255,255,255,.1);
+          flex: 1 1 auto;
+          display: flex;
+          align-items: center;
+          margin-bottom: 1em;
+          transition: all 1s;
+          justify-content: initial;
+      }
+      
+      .todo-item p {
+          margin: 0;
+          font-size: 1.2em;
+          flex: 1 1 auto;
+          margin-left: 1em;
+      }
+      
+      .todo-item button {
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity .5s ease-in-out;
+          transition-delay: .5s;
+          display: flex;
+          flex: 0 0 calc(4em - 12px);
+          height: 4em;
+          padding: 0;
+      }
+      
+      .todo-item:hover button {
+          opacity: 1;
+          pointer-events: all;
+          transition: opacity .1s ease-in-out;
+          transition-delay: 0s;
+      }
+      
+      .todo-item button:last-of-type {
+          margin-right: 6px;
+      }
+      
+      .todo-item button img {
+          width: 100%;
+          height: auto;
+      }
+      
+      .todo-item-enter, .todo-item-leave-to {
+          opacity: 0;
+          transform: translateY(30px);
+      }
+      
+      .todo-item-leave-active {
+          position: absolute;
+      }
+      
+      .row {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-evenly;
+      }
+      
+      .column {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-evenly;
+          align-items: center;
+      }
+      
+      .center {
+          justify-content: center;
+      }
+      
+      .mb {
+          margin-bottom: 1em;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <section class="container">
+      <div id="todos">
+        <date-header></date-header>
+        <todo-input @add="add"></todo-input>
+        <h2>Current todos <small>({{ openTodos.length }})</small></h2>
+        <ul class="todo-list" v-if="openTodos.length &gt; 0">
+          <transition-group name="todo-item" tag="p">
+            <todo-item v-for="todo in openTodos" :title="todo.title" :key="todo.id" @check="deleteTodo(todo.id)" @pause="pauseTodo(todo.id)" @remove="deleteTodo(todo.id)"></todo-item>
+          </transition-group>
+        </ul><small v-else>No open todos</small>
+        <h2>Suspended todos <small>({{ laterTodos.length }})</small></h2>
+        <ul class="todo-list" v-if="laterTodos.length">
+          <transition-group name="todo-item" tag="p">
+            <todo-item v-for="todo in laterTodos" :title="todo.title" :key="todo.id" :later="todo.later" @check="pauseTodo(todo.id)" @remove="deleteTodo(todo.id)"></todo-item>
+          </transition-group>
+        </ul><small v-else>No suspended todos</small>
+      </div>
+    </section>
+    <script src="js/vue.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "vue-todos",
+  "version": "1.0.0",
+  "description": "vue.js todo app",
+  "main": "",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "browser-sync": "*",
+    "eslint": "*",
+    "eslint-config-airbnb": "*",
+    "eslint-plugin-import": "*",
+    "gulp": "*",
+    "gulp-eslint": "*",
+    "gulp-pug": "*",
+    "vue": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src/js -d app/js",
+    "dev": "gulp"
+  },
+  "author": "Roman Kollatschny <mail@kollatschny.net> (http://kollatschny.net/)",
+  "license": "MIT"
+}
